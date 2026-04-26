@@ -1,18 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useLocalSearchParams, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { MOCK_HISTORY } from '@/constants/mockData';
+import { useWorkout } from '@/context/WorkoutContext';
 
 export default function HistoryDetailScreen() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme() ?? 'dark';
   const theme = Colors[colorScheme];
+  const { history } = useWorkout();
+  const router = useRouter();
 
-  const workout = MOCK_HISTORY.find(h => h.id === id) || MOCK_HISTORY[0];
+  const workout = history.find(h => h.id === id);
+
+  if (!workout) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ color: theme.text }}>Entrenamiento no encontrado</Text>
+      </View>
+    );
+  }
 
   return (
     <>

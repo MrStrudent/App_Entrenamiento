@@ -6,14 +6,15 @@ import { useRouter } from 'expo-router';
 
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { MOCK_HISTORY } from '@/constants/mockData';
+import { useWorkout, HistoryWorkout } from '@/context/WorkoutContext';
 
 export default function HistoryScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme() ?? 'dark';
   const theme = Colors[colorScheme];
+  const { history } = useWorkout();
 
-  const renderItem = ({ item }: { item: typeof MOCK_HISTORY[0] }) => (
+  const renderItem = ({ item }: { item: HistoryWorkout }) => (
     <TouchableOpacity 
       style={[styles.historyCard, { backgroundColor: theme.card, borderColor: theme.border }]}
       onPress={() => router.push(`/history-detail?id=${item.id}`)}
@@ -51,12 +52,21 @@ export default function HistoryScreen() {
       <View style={[styles.header, { borderBottomColor: theme.border }]}>
         <Text style={[styles.headerTitle, { color: theme.text }]}>Historial</Text>
       </View>
-      <FlatList
-        data={MOCK_HISTORY}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContent}
-      />
+      {history.length > 0 ? (
+        <FlatList
+          data={history}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContent}
+        />
+      ) : (
+        <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', padding: 24 }]}>
+          <MaterialCommunityIcons name="history" size={64} color={theme.border} style={{ marginBottom: 16 }} />
+          <Text style={{ color: theme.textMuted, fontSize: 16, textAlign: 'center' }}>
+            Aún no hay entrenamientos registrados.
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
