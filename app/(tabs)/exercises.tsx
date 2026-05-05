@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image, Modal, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { MOCK_EXERCISES } from '@/constants/mockData';
+import { EXERCISES, Exercise } from '@/constants/exercises';
 
 const MUSCLE_GROUPS = ['Todos', 'Pecho', 'Espalda', 'Piernas', 'Brazos', 'Hombros', 'Core'];
 
@@ -15,15 +15,25 @@ export default function ExercisesScreen() {
 
   const [search, setSearch] = useState('');
   const [selectedMuscle, setSelectedMuscle] = useState('Todos');
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const filteredExercises = MOCK_EXERCISES.filter(ex => {
+  const filteredExercises = EXERCISES.filter(ex => {
     const matchesSearch = ex.name.toLowerCase().includes(search.toLowerCase());
     const matchesMuscle = selectedMuscle === 'Todos' || ex.muscle === selectedMuscle;
     return matchesSearch && matchesMuscle;
   });
 
-  const renderExercise = ({ item }: { item: typeof MOCK_EXERCISES[0] }) => (
-    <View style={[styles.exerciseCard, { backgroundColor: theme.card, borderColor: theme.border }]}>
+  const handleExercisePress = (exercise: Exercise) => {
+    setSelectedExercise(exercise);
+    setModalVisible(true);
+  };
+
+  const renderExercise = ({ item }: { item: Exercise }) => (
+    <TouchableOpacity 
+      style={[styles.exerciseCard, { backgroundColor: theme.card, borderColor: theme.border }]}
+      onPress={() => handleExercisePress(item)}
+    >
       <Image source={{ uri: item.image }} style={styles.exerciseImage} />
       <View style={styles.exerciseInfo}>
         <Text style={[styles.exerciseName, { color: theme.text }]}>{item.name}</Text>
@@ -31,10 +41,10 @@ export default function ExercisesScreen() {
           {item.muscle} • {item.equipment}
         </Text>
       </View>
-      <TouchableOpacity style={[styles.addButton, { backgroundColor: theme.tint + '20' }]}>
-        <MaterialCommunityIcons name="plus" size={24} color={theme.tint} />
-      </TouchableOpacity>
-    </View>
+      <View style={[styles.addButton, { backgroundColor: theme.tint + '20' }]}>
+        <MaterialCommunityIcons name="chevron-right" size={24} color={theme.tint} />
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -88,6 +98,66 @@ export default function ExercisesScreen() {
           <Text style={[styles.emptyText, { color: theme.textMuted }]}>No se encontraron ejercicios.</Text>
         }
       />
+
+      {/* Modal de Detalle */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: theme.background }]}>
+            {selectedExercise && (
+              <>
+                <View style={[styles.modalHeader, { borderBottomColor: theme.border }]}>
+                  <Text style={[styles.modalTitle, { color: theme.text }]}>{selectedExercise.name}</Text>
+                  <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                    <MaterialCommunityIcons name="close" size={24} color={theme.text} />
+                  </TouchableOpacity>
+                </View>
+                
+                <ScrollView style={styles.modalBody} contentContainerStyle={{ paddingBottom: 40 }}>
+                  <Image source={{ uri: selectedExercise.image }} style={styles.modalImage} />
+                  
+                  <View style={styles.badgesContainer}>
+                    <View style={[styles.badge, { backgroundColor: theme.tint + '20' }]}>
+                      <Text style={[styles.badgeText, { color: theme.tint }]}>{selectedExercise.muscle}</Text>
+                    </View>
+                    <View style={[styles.badge, { backgroundColor: theme.card, borderColor: theme.border, borderWidth: 1 }]}>
+                      <Text style={[styles.badgeText, { color: theme.text }]}>{selectedExercise.equipment}</Text>
+                    </View>
+                    <View style={[styles.badge, { backgroundColor: theme.card, borderColor: theme.border, borderWidth: 1 }]}>
+                      <Text style={[styles.badgeText, { color: theme.text }]}>{selectedExercise.level}</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.section}>
+                    <Text style={[styles.sectionTitle, { color: theme.text }]}>Ejecución</Text>
+                    <Text style={[styles.sectionText, { color: theme.textMuted }]}>{selectedExercise.description}</Text>
+                  </View>
+
+                  <View style={styles.section}>
+                    <Text style={[styles.sectionTitle, { color: theme.text }]}>Músculos Principales</Text>
+                    <Text style={[styles.sectionText, { color: theme.textMuted }]}>{selectedExercise.primaryMuscles.join(', ')}</Text>
+                  </View>
+
+                  <View style={styles.section}>
+                    <Text style={[styles.sectionTitle, { color: theme.text }]}>Músculos Secundarios</Text>
+                    <Text style={[styles.sectionText, { color: theme.textMuted }]}>{selectedExercise.secondaryMuscles.join(', ')}</Text>
+                  </View>
+
+                  <View style={styles.section}>
+                    <Text style={[styles.sectionTitle, { color: theme.text }]}>Beneficios</Text>
+                    <Text style={[styles.sectionText, { color: theme.textMuted }]}>{selectedExercise.benefits}</Text>
+                  </View>
+                </ScrollView>
+              </>
+            )}
+          </View>
+        </View>
+      </Modal>
+
     </SafeAreaView>
   );
 }
@@ -109,5 +179,20 @@ const styles = StyleSheet.create({
   exerciseName: { fontSize: 16, fontWeight: 'bold', marginBottom: 4 },
   exerciseDetail: { fontSize: 14 },
   addButton: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
-  emptyText: { textAlign: 'center', marginTop: 40, fontSize: 16 }
+  emptyText: { textAlign: 'center', marginTop: 40, fontSize: 16 },
+  
+  // Modal styles
+  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' },
+  modalContent: { height: '85%', borderTopLeftRadius: 24, borderTopRightRadius: 24, overflow: 'hidden' },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1 },
+  modalTitle: { fontSize: 20, fontWeight: 'bold' },
+  closeButton: { padding: 4 },
+  modalBody: { flex: 1 },
+  modalImage: { width: '100%', height: 200, resizeMode: 'cover' },
+  badgesContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, padding: 16 },
+  badge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16 },
+  badgeText: { fontSize: 14, fontWeight: '600' },
+  section: { paddingHorizontal: 16, paddingBottom: 16 },
+  sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 8 },
+  sectionText: { fontSize: 15, lineHeight: 22 },
 });

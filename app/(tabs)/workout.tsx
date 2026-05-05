@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { MOCK_EXERCISES } from '@/constants/mockData';
+import { EXERCISES } from '@/constants/exercises';
+import { TEMPLATES, WorkoutTemplate } from '@/constants/templates';
 import { Colors } from '@/constants/theme';
-import { Exercise, useWorkout } from '@/context/WorkoutContext';
+import { Exercise, useWorkout, WorkoutExercise } from '@/context/WorkoutContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function WorkoutScreen() {
@@ -54,6 +55,24 @@ export default function WorkoutScreen() {
     router.navigate('/(tabs)/history');
   };
 
+  const handleStartTemplate = (template: WorkoutTemplate) => {
+    const initialExercises: WorkoutExercise[] = template.exercises.map((tEx, index) => {
+      const exerciseDef = EXERCISES.find(e => e.id === tEx.exerciseId);
+      return {
+        id: `template-ex-${index}-${Date.now()}`,
+        exercise: exerciseDef!,
+        sets: tEx.sets.map((tSet, setIndex) => ({
+          id: `template-set-${index}-${setIndex}-${Date.now()}`,
+          reps: tSet.reps,
+          weight: tSet.weight,
+          completed: false
+        }))
+      };
+    }).filter(ex => ex.exercise !== undefined);
+
+    startWorkout(template.name, initialExercises);
+  };
+
   const renderExerciseItem = ({ item }: { item: Exercise }) => (
     <TouchableOpacity
       style={[styles.modalExerciseItem, { backgroundColor: theme.background, borderColor: theme.border }]}
@@ -73,17 +92,40 @@ export default function WorkoutScreen() {
 
   if (!activeWorkout) {
     return (
-      <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
-        <MaterialCommunityIcons name="weight-lifter" size={64} color={theme.tint} style={{ marginBottom: 24 }} />
-        <Text style={[styles.emptyStateTitle, { color: theme.text }]}>¿Listo para entrenar?</Text>
-        <Text style={[styles.emptyStateSubtitle, { color: theme.textMuted }]}>Comienza un nuevo entrenamiento vacío y registra tus progresos.</Text>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <ScrollView contentContainerStyle={{ padding: 24 }}>
+          <MaterialCommunityIcons name="weight-lifter" size={48} color={theme.tint} style={{ alignSelf: 'center', marginBottom: 16 }} />
+          <Text style={[styles.emptyStateTitle, { color: theme.text }]}>¿Listo para entrenar?</Text>
+          <Text style={[styles.emptyStateSubtitle, { color: theme.textMuted }]}>Comienza un nuevo entrenamiento vacío o selecciona una plantilla.</Text>
 
-        <TouchableOpacity
-          style={[styles.startButton, { backgroundColor: theme.tint }]}
-          onPress={() => startWorkout('Entrenamiento Libre')}
-        >
-          <Text style={styles.startButtonText}>Iniciar Entrenamiento</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.startButton, { backgroundColor: theme.tint, marginBottom: 32 }]}
+            onPress={() => startWorkout('Entrenamiento Libre')}
+          >
+            <Text style={styles.startButtonText}>+ Entrenamiento Libre</Text>
+          </TouchableOpacity>
+
+          <Text style={[styles.sectionTitle, { color: theme.text, marginBottom: 16 }]}>Plantillas</Text>
+          <View style={styles.templatesGrid}>
+            {TEMPLATES.map(template => (
+              <TouchableOpacity
+                key={template.id}
+                style={[styles.templateCard, { backgroundColor: theme.card, borderColor: theme.border }]}
+                onPress={() => handleStartTemplate(template)}
+                activeOpacity={0.8}
+              >
+                <View style={[styles.templateIconContainer, { backgroundColor: template.color + '20' }]}>
+                  <MaterialCommunityIcons name={template.icon as any} size={28} color={template.color} />
+                </View>
+                <View style={styles.templateInfo}>
+                  <Text style={[styles.templateTitle, { color: theme.text }]}>{template.name}</Text>
+                  <Text style={[styles.templateDesc, { color: theme.textMuted }]}>{template.description}</Text>
+                </View>
+                <MaterialCommunityIcons name="chevron-right" size={24} color={theme.textMuted} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -192,7 +234,7 @@ export default function WorkoutScreen() {
           </View>
 
           <FlatList
-            data={MOCK_EXERCISES}
+            data={EXERCISES}
             keyExtractor={(item) => item.id}
             renderItem={renderExerciseItem}
             contentContainerStyle={styles.modalList}
@@ -244,4 +286,13 @@ const styles = StyleSheet.create({
   modalExerciseInfo: { flex: 1 },
   modalExerciseName: { fontSize: 16, fontWeight: '600', marginBottom: 4 },
   modalExerciseMuscle: { fontSize: 14 },
+  
+  // Templates styles
+  sectionTitle: { fontSize: 18, fontWeight: 'bold' },
+  templatesGrid: { gap: 12 },
+  templateCard: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 16, borderWidth: 1 },
+  templateIconContainer: { width: 50, height: 50, borderRadius: 25, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
+  templateInfo: { flex: 1 },
+  templateTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 4 },
+  templateDesc: { fontSize: 13, lineHeight: 18 },
 });

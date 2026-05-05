@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MOCK_EXERCISES } from '@/constants/mockData';
+import { Exercise } from '@/constants/exercises';
 
-export type Exercise = typeof MOCK_EXERCISES[0];
+export type { Exercise };
 
 export type SetInfo = {
   id: string;
@@ -51,7 +51,7 @@ const STORAGE_KEY = '@workout_history';
 type WorkoutContextType = {
   activeWorkout: ActiveWorkout | null;
   history: HistoryWorkout[];
-  startWorkout: (name?: string) => void;
+  startWorkout: (name?: string, initialExercises?: WorkoutExercise[]) => void;
   finishWorkout: () => void;
   cancelWorkout: () => void;
   addExercise: (exercise: Exercise) => void;
@@ -95,12 +95,12 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
     saveHistory();
   }, [history]);
 
-  const startWorkout = (name = 'Entrenamiento Libre') => {
+  const startWorkout = (name = 'Entrenamiento Libre', initialExercises: WorkoutExercise[] = []) => {
     setActiveWorkout({
       id: Date.now().toString(),
       name,
       startTime: Date.now(),
-      exercises: [],
+      exercises: initialExercises,
     });
   };
 
