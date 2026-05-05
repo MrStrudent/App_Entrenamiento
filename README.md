@@ -62,8 +62,8 @@ graph TD
 ---
 
 ## Conclusión
-## Conlcusion Carlos Andrei Saucedo Aguilar
+## Conclusión Carlos Andrei Saucedo Aguilar
 Esta aplicación es bastante sencilla de utilizar, la probamos en el gym para probar el funcionamiento y aunque si hay detalles que pulir creo que cumple con su cometido, es bastante rapida, ligera y cumple con todas las funciones que se requieren para llevar un control de rutinas y progreso de manera basica pero funcional. Los puntos fuertes son el temporizador integrado y las graficas para ver el progreso. Finalmente creo que es una buena base para partir del desarrollo de una aplicacion mas robusta y personalizable con el usuario
 
 
-## Conclusion Erick Zaid Medina Torres
+## Conclusión Erick Zaid Medina Torres
