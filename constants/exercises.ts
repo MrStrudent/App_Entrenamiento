@@ -177,6 +177,54 @@ export const EXERCISES: Exercise[] = [
     benefits: 'Aísla el tríceps con tensión constante a lo largo del movimiento.',
     level: 'Principiante'
   },
+  {
+    id: 'arms-3',
+    name: 'Curl Martillo',
+    muscle: 'Brazos',
+    equipment: 'Mancuernas',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'De pie, levanta las mancuernas con agarre neutro (palmas enfrentadas) manteniendo los codos pegados al cuerpo.',
+    primaryMuscles: ['Braquial anterior', 'Braquiorradial'],
+    secondaryMuscles: ['Bíceps braquial'],
+    benefits: 'Desarrolla el grosor del brazo y fortalece los antebrazos.',
+    level: 'Principiante'
+  },
+  {
+    id: 'arms-4',
+    name: 'Fondos de Tríceps (Dips)',
+    muscle: 'Brazos',
+    equipment: 'Peso corporal',
+    image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=1332&auto=format&fit=crop',
+    description: 'Apoya las manos en un banco detrás de ti. Baja el cuerpo doblando los codos hasta los 90 grados y empuja hacia arriba.',
+    primaryMuscles: ['Tríceps braquial'],
+    secondaryMuscles: ['Pecho', 'Deltoides anterior'],
+    benefits: 'Excelente ejercicio compuesto para desarrollar masa en los tríceps.',
+    level: 'Intermedio'
+  },
+  {
+    id: 'arms-5',
+    name: 'Curl Predicador',
+    muscle: 'Brazos',
+    equipment: 'Máquina / Banco',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'Sentado en el banco predicador, apoya los tríceps en la almohadilla y flexiona los codos para levantar el peso. Evita balancearte.',
+    primaryMuscles: ['Bíceps braquial (cabeza corta)'],
+    secondaryMuscles: ['Braquial anterior'],
+    benefits: 'Aísla completamente el bíceps al eliminar el impulso del cuerpo.',
+    level: 'Intermedio'
+  },
+  {
+    id: 'arms-6',
+    name: 'Curl Concentrado',
+    muscle: 'Brazos',
+    equipment: 'Mancuernas',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'Sentado, apoya el codo en la parte interna del muslo. Levanta la mancuerna contrayendo el bíceps y baja controladamente.',
+    primaryMuscles: ['Bíceps braquial'],
+    secondaryMuscles: ['Braquial'],
+    benefits: 'Excelente para lograr el pico del bíceps y máxima concentración.',
+    level: 'Intermedio'
+  },
 
   // Core
   {
@@ -202,5 +250,103 @@ export const EXERCISES: Exercise[] = [
     secondaryMuscles: ['Oblicuos'],
     benefits: 'Aísla el músculo recto abdominal (el "six pack").',
     level: 'Principiante'
+  },
+  {
+    id: 'core-3',
+    name: 'Elevación de Piernas',
+    muscle: 'Core',
+    equipment: 'Peso corporal',
+    image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1469&auto=format&fit=crop',
+    description: 'Acostado boca arriba, levanta ambas piernas rectas hasta que formen un ángulo de 90 grados con el suelo, luego bájalas lentamente sin tocar el piso.',
+    primaryMuscles: ['Recto abdominal inferior'],
+    secondaryMuscles: ['Flexores de la cadera'],
+    benefits: 'Trabaja intensamente la porción inferior del abdomen.',
+    level: 'Intermedio'
+  },
+  {
+    id: 'core-4',
+    name: 'Giros Rusos (Russian Twists)',
+    muscle: 'Core',
+    equipment: 'Peso corporal / Disco',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'Sentado en el suelo con las rodillas flexionadas, inclina el torso ligeramente hacia atrás. Gira el torso de lado a lado tocando el suelo con las manos o el peso.',
+    primaryMuscles: ['Oblicuos'],
+    secondaryMuscles: ['Recto abdominal'],
+    benefits: 'Mejora la fuerza rotacional del core y tonifica los oblicuos.',
+    level: 'Intermedio'
+  },
+  {
+    id: 'core-5',
+    name: 'Crunch en Máquina',
+    muscle: 'Core',
+    equipment: 'Máquina',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'Sentado en la máquina, agarra las asas y contrae el abdomen para acercar el torso hacia las rodillas, venciendo la resistencia.',
+    primaryMuscles: ['Recto abdominal'],
+    secondaryMuscles: ['Oblicuos'],
+    benefits: 'Permite añadir peso al trabajo abdominal de forma segura y controlada.',
+    level: 'Intermedio'
+  },
+  {
+    id: 'core-6',
+    name: 'Rotación de Abdomen en Máquina',
+    muscle: 'Core',
+    equipment: 'Máquina',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'Sentado en la máquina de rotación, gira el torso hacia un lado usando la fuerza de tu abdomen, controlando el regreso a la posición inicial.',
+    primaryMuscles: ['Oblicuos'],
+    secondaryMuscles: ['Core estabilizador'],
+    benefits: 'Desarrolla fuerza de rotación y estabilidad lateral.',
+    level: 'Intermedio'
+  },
+  {
+    id: 'core-7',
+    name: 'Elevación de Piernas (Aparato Vertical)',
+    muscle: 'Core',
+    equipment: 'Máquina',
+    image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=1332&auto=format&fit=crop',
+    description: 'Apoya los antebrazos en las almohadillas y la espalda en el respaldo. Levanta las rodillas hacia el pecho o las piernas rectas para mayor dificultad.',
+    primaryMuscles: ['Recto abdominal inferior'],
+    secondaryMuscles: ['Flexores de la cadera'],
+    benefits: 'Aísla el abdomen inferior protegiendo la espalda baja.',
+    level: 'Avanzado'
+  },
+
+  // Cardio
+  {
+    id: 'cardio-1',
+    name: 'Cinta de Correr (Treadmill)',
+    muscle: 'Cardio',
+    equipment: 'Máquina',
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop',
+    description: 'Camina, trota o corre a un ritmo constante o en intervalos.',
+    primaryMuscles: ['Corazón', 'Pulmones'],
+    secondaryMuscles: ['Piernas'],
+    benefits: 'Mejora la resistencia cardiovascular y quema calorías.',
+    level: 'Principiante'
+  },
+  {
+    id: 'cardio-2',
+    name: 'Bicicleta Estática',
+    muscle: 'Cardio',
+    equipment: 'Máquina',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop',
+    description: 'Pedalea a un ritmo constante, ajustando la resistencia según sea necesario.',
+    primaryMuscles: ['Corazón', 'Pulmones'],
+    secondaryMuscles: ['Cuádriceps', 'Glúteos'],
+    benefits: 'Excelente opción de cardio de bajo impacto para las articulaciones.',
+    level: 'Principiante'
+  },
+  {
+    id: 'cardio-3',
+    name: 'Salto de Cuerda',
+    muscle: 'Cardio',
+    equipment: 'Cuerda',
+    image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=1332&auto=format&fit=crop',
+    description: 'Salta sobre la cuerda manteniendo un ritmo constante. Mantén los codos pegados al cuerpo y usa las muñecas para girar.',
+    primaryMuscles: ['Corazón', 'Pulmones'],
+    secondaryMuscles: ['Pantorrillas', 'Hombros'],
+    benefits: 'Mejora la coordinación, agilidad y es un excelente ejercicio cardiovascular.',
+    level: 'Intermedio'
   }
 ];

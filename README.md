@@ -1,50 +1,66 @@
-# Welcome to your Expo app 👋
+# FitApp: Seguimiento y Entrenamiento
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Introducción
 
-## Get started
+Bienvenido a la aplicación de entrenamiento definitiva construida con React Native y Expo. Esta aplicación está diseñada para ayudarte a llevar un control estructurado de tus rutinas en el gimnasio, hacer un seguimiento detallado de tus ejercicios, tiempos de descanso y evolución física de manera intuitiva y rápida. 
 
-1. Install dependencies
+Gracias a su arquitectura moderna, permite gestionar entrenamientos libres o utilizar plantillas predefinidas (Rutinas Push, Pull, Piernas, etc.), además de mantener un historial de tu rendimiento y fotografías de progreso corporal.
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## Capturas de la app
 
-   ```bash
-   npx expo start
-   ```
+*(Nota: Agrega aquí las capturas de pantalla de la aplicación)*
 
-In the output, you'll find options to open the app in a
+- [Captura de Pantalla Inicio]
+- [Captura de Pantalla Entrenar]
+- [Captura de Pantalla Historial]
+- [Captura de Pantalla Ejercicios]
+- [Captura de Pantalla Progreso y Gráficas]
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Explicación del funcionamiento
 
-## Get a fresh project
+La aplicación está diseñada para que el registro de tus entrenamientos sea lo más ágil posible. Sus principales módulos de funcionamiento incluyen:
 
-When you're ready, run:
+1. **Dashboard Central (Inicio):** Una vista que centraliza tu actividad. Muestra si tienes un entrenamiento activo, el resumen de tu última sesión, accesos directos al temporizador, tu catálogo de ejercicios y tu progreso corporal.
+2. **Sistema de Entrenamiento:** 
+   - **Plantillas vs Libre:** Puedes iniciar un entrenamiento desde cero o utilizar una de las 5 plantillas precargadas con ejercicios ya definidos.
+   - **Registro en tiempo real:** Agrega peso y repeticiones a cada serie, márcalas como completadas y observa el tiempo transcurrido en tu sesión.
+3. **Biblioteca de Ejercicios:** Un catálogo completo con datos reales de ejercicios divididos por grupo muscular, incluyendo descripción, músculos implicados, nivel y beneficios.
+4. **Seguimiento Físico (Progreso):** Un módulo específico que te permite registrar tu peso corporal y medidas de manera periódica, visualizando tu evolución a través de gráficas interactivas y guardando un diario fotográfico local.
+5. **Persistencia de Datos:** Todos los datos (historial, rutinas activas, registros corporales) se almacenan localmente utilizando `AsyncStorage`, lo que garantiza que tu información permanezca segura en tu dispositivo.
 
-```bash
-npm run reset-project
+---
+
+## Diagrama de la aplicación (pantallas y flujo)
+
+El flujo de navegación principal está basado en un sistema de pestañas (Bottom Tabs) que conecta las 4 vistas principales, más el modal de Progreso y los detalles del historial.
+
+```mermaid
+graph TD
+    A[Pantalla de Inicio / Dashboard] --> B((Entrenar))
+    A --> C((Historial))
+    A --> D((Descanso))
+    A --> E((Ejercicios))
+    
+    A --> P[Modal de Progreso]
+    
+    B --> B1[Selección de Plantillas]
+    B --> B2[Entrenamiento Activo]
+    B2 --> B3[Modal: Añadir Ejercicio]
+    B2 -.->|Al Finalizar| C
+    
+    C --> C1[Detalle del Entrenamiento Pasado]
+    
+    P --> P1[Formulario de Medidas]
+    P --> P2[Gráficas de Evolución]
+    P --> P3[Galería de Fotos]
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## Conclusión
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Esta aplicación representa una solución completa y robusta para cualquier persona que desee llevar su entrenamiento al siguiente nivel sin depender de libretas o notas desorganizadas. Al combinar una interfaz moderna y atractiva (con soporte para modo oscuro) con funciones clave como gráficas de peso y temporizadores de descanso integrados, se convierte en la herramienta indispensable para el día a día en el gimnasio.

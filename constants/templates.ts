@@ -142,5 +142,34 @@ export const TEMPLATES: WorkoutTemplate[] = [
         sets: [{ reps: 15, weight: 0 }, { reps: 15, weight: 0 }, { reps: 12, weight: 0 }],
       },
     ]
+  },
+  {
+    id: 'morning-routine',
+    name: 'Rutina de Mañana',
+    description: 'Sesión rápida combinando Cardio, Brazos y Abdomen.',
+    icon: 'weather-sunset-up',
+    color: '#EAB308', // Yellow
+    exercises: [
+      {
+        exerciseId: 'cardio-1', // Cinta de correr (ej. 15 mins)
+        sets: [{ reps: 15, weight: 0 }],
+      },
+      {
+        exerciseId: 'arms-1', // Curl de Bíceps
+        sets: [{ reps: 12, weight: 0 }, { reps: 12, weight: 0 }, { reps: 12, weight: 0 }],
+      },
+      {
+        exerciseId: 'arms-4', // Fondos de Tríceps
+        sets: [{ reps: 10, weight: 0 }, { reps: 10, weight: 0 }, { reps: 10, weight: 0 }],
+      },
+      {
+        exerciseId: 'core-1', // Plancha (ej. 60 seg)
+        sets: [{ reps: 60, weight: 0 }, { reps: 60, weight: 0 }, { reps: 60, weight: 0 }],
+      },
+      {
+        exerciseId: 'core-4', // Giros Rusos
+        sets: [{ reps: 20, weight: 0 }, { reps: 20, weight: 0 }, { reps: 20, weight: 0 }],
+      },
+    ]
   }
 ];
