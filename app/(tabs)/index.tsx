@@ -6,15 +6,28 @@ import { useRouter } from 'expo-router';
 
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { MOCK_USER, MOCK_HISTORY, MOCK_EXERCISES } from '@/constants/mockData';
+import { MOCK_USER, MOCK_EXERCISES } from '@/constants/mockData';
+import { useWorkout } from '@/context/WorkoutContext';
 
 export default function HomeScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme() ?? 'dark';
   const theme = Colors[colorScheme];
+  const { history } = useWorkout();
 
-  const lastWorkout = MOCK_HISTORY[0];
+  const lastWorkout = history.length > 0 ? history[0] : null;
   const recentExercises = MOCK_EXERCISES.slice(0, 3);
+
+  /** Formatea fecha relativa */
+  const formatRelativeDate = (isoDate: string): string => {
+    const date = new Date(isoDate);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Hoy';
+    if (diffDays === 1) return 'Ayer';
+    if (diffDays < 7) return `Hace ${diffDays} días`;
+    return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+  };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
@@ -35,7 +48,14 @@ export default function HomeScreen() {
         <View style={styles.statsRow}>
           <View style={[styles.statCard, { backgroundColor: theme.card, borderColor: theme.border }]}>
             <MaterialCommunityIcons name="lightning-bolt" size={24} color={theme.tint} />
-            <Text style={[styles.statValue, { color: theme.text }]}>{MOCK_USER.workoutsThisWeek}</Text>
+            <Text style={[styles.statValue, { color: theme.text }]}>
+              {history.filter(w => {
+                const d = new Date(w.date);
+                const now = new Date();
+                const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+                return diffDays < 7;
+              }).length}
+            </Text>
             <Text style={[styles.statLabel, { color: theme.textMuted }]}>Esta Semana</Text>
           </View>
           <View style={[styles.statCard, { backgroundColor: theme.card, borderColor: theme.border }]}>
@@ -47,26 +67,37 @@ export default function HomeScreen() {
 
         {/* Last Workout Card */}
         <Text style={[styles.sectionTitle, { color: theme.text }]}>Último Entrenamiento</Text>
-        <TouchableOpacity 
-          style={[styles.mainCard, { backgroundColor: theme.card, borderColor: theme.border }]}
-          onPress={() => router.push('/history')}
-          activeOpacity={0.8}
-        >
-          <View style={styles.cardHeader}>
-            <Text style={[styles.cardTitle, { color: theme.text }]}>{lastWorkout.name}</Text>
-            <Text style={[styles.cardSubtitle, { color: theme.textMuted }]}>{lastWorkout.date}</Text>
-          </View>
-          <View style={styles.cardDetails}>
-            <View style={styles.detailItem}>
-              <MaterialCommunityIcons name="clock-outline" size={16} color={theme.textMuted} />
-              <Text style={[styles.detailText, { color: theme.textMuted }]}>{lastWorkout.duration}</Text>
+        {lastWorkout ? (
+          <TouchableOpacity 
+            style={[styles.mainCard, { backgroundColor: theme.card, borderColor: theme.border }]}
+            onPress={() => router.push(`/history-detail?id=${lastWorkout.id}`)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.cardHeader}>
+              <Text style={[styles.cardTitle, { color: theme.text }]}>{lastWorkout.name}</Text>
+              <Text style={[styles.cardSubtitle, { color: theme.textMuted }]}>{formatRelativeDate(lastWorkout.date)}</Text>
             </View>
-            <View style={styles.detailItem}>
-              <MaterialCommunityIcons name="weight" size={16} color={theme.textMuted} />
-              <Text style={[styles.detailText, { color: theme.textMuted }]}>{lastWorkout.volume}</Text>
+            <View style={styles.cardDetails}>
+              <View style={styles.detailItem}>
+                <MaterialCommunityIcons name="clock-outline" size={16} color={theme.textMuted} />
+                <Text style={[styles.detailText, { color: theme.textMuted }]}>{lastWorkout.duration}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <MaterialCommunityIcons name="weight" size={16} color={theme.textMuted} />
+                <Text style={[styles.detailText, { color: theme.textMuted }]}>{lastWorkout.volume}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <MaterialCommunityIcons name="dumbbell" size={16} color={theme.textMuted} />
+                <Text style={[styles.detailText, { color: theme.textMuted }]}>{lastWorkout.exercises.length} ejerc.</Text>
+              </View>
             </View>
+          </TouchableOpacity>
+        ) : (
+          <View style={[styles.mainCard, { backgroundColor: theme.card, borderColor: theme.border, alignItems: 'center' }]}>
+            <MaterialCommunityIcons name="weight-lifter" size={32} color={theme.textMuted} style={{ marginBottom: 8 }} />
+            <Text style={[styles.cardSubtitle, { color: theme.textMuted, textAlign: 'center' }]}>No hay entrenamientos aún.{"\n"}¡Comienza tu primero!</Text>
           </View>
-        </TouchableOpacity>
+        )}
 
         {/* Quick Links */}
         <Text style={[styles.sectionTitle, { color: theme.text }]}>Accesos Rápidos</Text>

@@ -37,43 +37,4 @@ export const MOCK_WORKOUT_TEMPLATE = {
   ]
 };
 
-export const MOCK_HISTORY = [
-  {
-    id: 'h1',
-    date: '2023-10-25',
-    name: 'Día de Piernas',
-    duration: '1h 15m',
-    volume: '8,500 kg',
-    records: 2,
-    exercises: [
-      { name: 'Sentadilla', sets: 4 },
-      { name: 'Peso Muerto', sets: 3 },
-      { name: 'Prensa', sets: 3 },
-    ]
-  },
-  {
-    id: 'h2',
-    date: '2023-10-23',
-    name: 'Día de Empuje',
-    duration: '1h 05m',
-    volume: '6,200 kg',
-    records: 0,
-    exercises: [
-      { name: 'Press de Banca', sets: 4 },
-      { name: 'Press Militar', sets: 3 },
-    ]
-  },
-  {
-    id: 'h3',
-    date: '2023-10-21',
-    name: 'Día de Tirón',
-    duration: '1h 10m',
-    volume: '7,100 kg',
-    records: 1,
-    exercises: [
-      { name: 'Dominadas', sets: 4 },
-      { name: 'Remo con Barra', sets: 4 },
-      { name: 'Curl de Bíceps', sets: 3 },
-    ]
-  }
-];
+

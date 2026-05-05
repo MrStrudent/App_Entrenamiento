@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { MOCK_EXERCISES, MOCK_HISTORY } from '@/constants/mockData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MOCK_EXERCISES } from '@/constants/mockData';
 
 export type Exercise = typeof MOCK_EXERCISES[0];
 
@@ -23,15 +24,29 @@ export type ActiveWorkout = {
   exercises: WorkoutExercise[];
 };
 
+// Detalle de cada serie guardada en el historial
+export type HistorySetDetail = {
+  reps: number;
+  weight: number;
+};
+
+// Detalle de cada ejercicio guardado en el historial
+export type HistoryExerciseDetail = {
+  name: string;
+  sets: HistorySetDetail[];
+};
+
 export type HistoryWorkout = {
   id: string;
-  date: string;
+  date: string;          // ISO date string  e.g. "2026-05-04"
   name: string;
-  duration: string;
-  volume: string;
-  records: number;
-  exercises: { name: string; sets: number }[];
+  duration: string;      // e.g. "1h 15m"
+  durationSeconds: number; // duración en segundos (para cálculos futuros)
+  volume: string;        // e.g. "8,500 kg"
+  exercises: HistoryExerciseDetail[];
 };
+
+const STORAGE_KEY = '@workout_history';
 
 type WorkoutContextType = {
   activeWorkout: ActiveWorkout | null;
@@ -44,13 +59,41 @@ type WorkoutContextType = {
   updateSet: (exerciseId: string, setId: string, field: 'reps' | 'weight', value: number) => void;
   toggleSetComplete: (exerciseId: string, setId: string) => void;
   removeSet: (exerciseId: string, setId: string) => void;
+  deleteHistoryWorkout: (id: string) => void;
 };
 
 const WorkoutContext = createContext<WorkoutContextType | undefined>(undefined);
 
 export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   const [activeWorkout, setActiveWorkout] = useState<ActiveWorkout | null>(null);
-  const [history, setHistory] = useState<HistoryWorkout[]>(MOCK_HISTORY); // Empezamos con datos de prueba
+  const [history, setHistory] = useState<HistoryWorkout[]>([]);
+
+  // Cargar historial desde AsyncStorage al montar
+  useEffect(() => {
+    const loadHistory = async () => {
+      try {
+        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          setHistory(JSON.parse(raw));
+        }
+      } catch (e) {
+        console.warn('Error loading workout history:', e);
+      }
+    };
+    loadHistory();
+  }, []);
+
+  // Guardar historial en AsyncStorage cada vez que cambie
+  useEffect(() => {
+    const saveHistory = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+      } catch (e) {
+        console.warn('Error saving workout history:', e);
+      }
+    };
+    saveHistory();
+  }, [history]);
 
   const startWorkout = (name = 'Entrenamiento Libre') => {
     setActiveWorkout({
@@ -66,44 +109,49 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
 
     // Calcular duración
     const diffMs = Date.now() - activeWorkout.startTime;
-    const diffMins = Math.floor(diffMs / 60000);
+    const diffSecs = Math.floor(diffMs / 1000);
+    const diffMins = Math.floor(diffSecs / 60);
     const hours = Math.floor(diffMins / 60);
     const mins = diffMins % 60;
     const duration = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
 
-    // Calcular volumen total y armar lista de ejercicios
+    // Calcular volumen total y armar lista de ejercicios con detalle de series
     let totalVolume = 0;
-    const historyExercises: { name: string; sets: number }[] = [];
+    const historyExercises: HistoryExerciseDetail[] = [];
 
     activeWorkout.exercises.forEach(ex => {
-      let completedSetsCount = 0;
+      const completedSets: HistorySetDetail[] = [];
       ex.sets.forEach(set => {
         if (set.completed) {
           totalVolume += set.reps * set.weight;
-          completedSetsCount++;
+          completedSets.push({ reps: set.reps, weight: set.weight });
         }
       });
-      if (completedSetsCount > 0) {
-        historyExercises.push({ name: ex.exercise.name, sets: completedSetsCount });
+      if (completedSets.length > 0) {
+        historyExercises.push({ name: ex.exercise.name, sets: completedSets });
       }
     });
 
     const newHistoryWorkout: HistoryWorkout = {
       id: activeWorkout.id,
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString(),
       name: activeWorkout.name,
-      duration: duration === '0m' ? '1m' : duration,
+      duration: duration === '0m' ? '< 1m' : duration,
+      durationSeconds: diffSecs,
       volume: `${totalVolume.toLocaleString()} kg`,
-      records: 0, // Simplificado para este prototipo
       exercises: historyExercises,
     };
 
-    setHistory([newHistoryWorkout, ...history]);
+    setHistory(prev => [newHistoryWorkout, ...prev]);
     setActiveWorkout(null);
   };
 
   const cancelWorkout = () => {
     setActiveWorkout(null);
+  };
+
+  const deleteHistoryWorkout = (id: string) => {
+    setHistory(prev => prev.filter(w => w.id !== id));
   };
 
   const addExercise = (exercise: Exercise) => {
@@ -206,7 +254,8 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
         addSet,
         updateSet,
         toggleSetComplete,
-        removeSet
+        removeSet,
+        deleteHistoryWorkout,
       }}
     >
       {children}
