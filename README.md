@@ -67,3 +67,4 @@ Esta aplicación es bastante sencilla de utilizar, la probamos en el gym para pr
 
 
 ## Conclusión Erick Zaid Medina Torres
+Google Antigravity te hace sentir como dios al momento de desarrollar ya que piensas en algo se lo dices y en menos de 1 minuto tienes 4 archivos nuevos y más de 300 líneas de código en cada uno, sin embargo, es importante recalcar que es abbsolutamente necesario trabajar por capas para elaborar un programa más apegado a la realidad ya que como menciona en la práctica, si le pides todo del tirón el agente sobrepiensa, alucina y hace tonterías. PD: Pues saquen unas aplicaciones para empezar a monetizar ¿no?
