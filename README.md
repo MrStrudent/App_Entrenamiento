@@ -10,13 +10,19 @@ Gracias a su arquitectura moderna, permite gestionar entrenamientos libres o uti
 
 ## Capturas de la app
 
-*(Nota: Agrega aquí las capturas de pantalla de la aplicación)*
-
-- [Captura de Pantalla Inicio]
-- [Captura de Pantalla Entrenar]
-- [Captura de Pantalla Historial]
-- [Captura de Pantalla Ejercicios]
-- [Captura de Pantalla Progreso y Gráficas]
+- Captura de Pantalla Inicio
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Inicio.jpeg)
+- Captura de Pantalla Entrenar
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Entrenar.jpeg)
+- Captura de Pantalla Historial
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Historial.jpeg)
+- Captura de Pantalla Descanso
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Descanso.jpeg)
+- Captura de Pantalla Ejercicios
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Ejercicios.jpeg)
+- Captura de Pantalla Progreso y Gráficas
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Progreso%20Registro.jpeg)
+- ![image alt](https://github.com/MrStrudent/App_Entrenamiento/blob/61c7dc5d0dca70eca2869363faa785f78ac00939/Pantallas/Pantalla%20Progreso%20Graficas.jpeg)
 
 ---
 
